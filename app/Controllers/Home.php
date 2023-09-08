@@ -42,8 +42,9 @@ class Home extends BaseController
             }
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
             $userModel->insert($data);
-            $this->session->set('user', $data);
-            return redirect()->to('/')->with('success', 'Registro exitoso. Bienvenido ' . $data['nombre'] . '.');
+            $user = $userModel->where('email', $data['email'])->first();
+            $this->session->set('user', $user);
+            return redirect()->to('/')->with('success', 'Registro exitoso. Bienvenido ' . $user['nombre'] . '.');
         }
         return view('home/register');
     }
